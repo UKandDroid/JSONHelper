@@ -18,13 +18,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// Path conventions :
+// PATH conventions:
 // item[0]                       get array element / JSON Object
 // item[0].object                get JSON Object in the element / object
-// item[0].object.arr            get array nested in object
+// item[0].object.arr[]          get array nested in object, if using getArray() method don't add '[]'
 // item[0].object.size_width     get/set a property of JSON Object
 // object1.object2.property      get nested objects and properties
-
+// METHODS:
+// getArray()  -- gets an array in json given the path
+// getObject() -- gets Object in json given the path
+// getRoot()   -- Returns Root JSON
+// isRootArray() -- tells if root JSON is Array or Object
+// get() -- Returns JSON Object/Array as JHelper object
+// getArray() -- Returns JSON Array
+// getObject() -- Returns JSON Object
 /* ********************************************************************************************
 * CLASS -- Helper class to get nester JSON objects by string
 * *********************************************************************************************

@@ -1,9 +1,5 @@
 package com.example.ubaid.jhelper;
 
-/**
- * Created by ubaid on 27/06/15.
- */
-
 import android.content.Context;
 import android.util.Log;
 
@@ -32,6 +28,7 @@ import java.util.List;
 // get() -- Returns JSON Object/Array as JHelper object
 // getArray() -- Returns JSON Array
 // getObject() -- Returns JSON Object
+
 /* ********************************************************************************************
 * CLASS -- Helper class to get nester JSON objects by string
 * *********************************************************************************************
@@ -71,11 +68,11 @@ public class JHelper {
     public JHelper setBoolean(String strPath, boolean value) {
         JSONObject jObj = null;
         JHelper jTemp = new JHelper();
-         try {
-             jObj = (JSONObject)getJson(strPath, true);
-             jObj.put(varName, value);
+        try {
+            jObj = (JSONObject)getJson(strPath, true);
+            jObj.put(varName, value);
         } catch (JSONException e) { Log.d(LOG_TAG, "JHelper::setBoolean() error  for: " + varName); }
-          jTemp.setRootJson(jObj);
+        jTemp.setRootJson(jObj);
         return jTemp;
     }
 
@@ -113,11 +110,30 @@ public class JHelper {
     }
 
     public Object getRoot(){
-        return bIsArray ? rootJsonObj : rootJsonArray;
+        return bIsArray ?  rootJsonArray : rootJsonObj;
     }
 
     public boolean isRootArray(){
         return bIsArray;
+    }
+
+    public int getLength(){
+        return bIsArray ? rootJsonArray.length() : 0;
+    }
+
+    public JHelper getIndex(int index){
+        JHelper jhObj = new JHelper();
+        if(bIsArray){
+            try {
+                jhObj.setRootJson(rootJsonArray.getJSONObject(index));
+            } catch (JSONException e) {
+                Log.d(LOG_TAG, "JHelper::setString() cannot get array index: "+ index);
+                e.printStackTrace();
+                return null;
+            }
+            return jhObj;
+        }
+        return null;
     }
 
     /**
@@ -186,12 +202,14 @@ public class JHelper {
                             } else {
                                 jsonResult = ((JSONObject) (jsonResult)).getJSONObject(tokens.get(i).name);
                             }
+                            break;
                         case 1:
                             if (bIsArray) {
                                 jsonResult = ((JSONArray) (jsonResult));
                             } else {
                                 jsonResult = ((JSONObject) (jsonResult)).getJSONArray(tokens.get(i).name);
                             }
+                            break;
                         default:
                             if (bIsArray) {
                                 jsonResult = ((JSONArray) (jsonResult)).getJSONObject(tokens.get(i).index);
@@ -203,8 +221,10 @@ public class JHelper {
                     switch (tokens.get(i).type) {
                         case 0:
                             jsonResult = ((JSONObject) (jsonResult)).getJSONObject(tokens.get(i).name);
+                            break;
                         case 1:
                             jsonResult = ((JSONObject) (jsonResult)).getJSONArray(tokens.get(i).name);
+                            break;
                         default:
                             jsonResult = ((JSONObject) (jsonResult)).getJSONArray(tokens.get(i).name).get(tokens.get(i).index);
                     }
@@ -245,12 +265,12 @@ public class JHelper {
     public void setRootJson(JSONArray json) {
         rootJsonArray = json;
         bIsArray = true;
-        Iterator<?> keys = rootJsonObj.keys();
+   /*     Iterator<?> keys = rootJsonObj.keys();
         if (keys.hasNext()) {
             String rootNode = (String) keys.next();
             rootName = rootNode;
             Log.d(LOG_TAG, "RootNode: " + rootNode);
-        }
+        }*/
     }
 
     public String getRootName() {
@@ -314,3 +334,4 @@ public class JHelper {
     }
 
 }
+

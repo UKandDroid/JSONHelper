@@ -41,6 +41,10 @@ public class JHelper {
     private boolean bIsArray = false;
     private final String LOG_TAG = "JHelper";
 
+    public JHelper(){}
+    public JHelper(JSONObject jObject){ setRootJson(jObject); }
+    public JHelper(JSONArray jArray){ setRootJson(jArray); }
+
     public JSONArray getArray(String strPath) {
         return (JSONArray) getJson(strPath+"[]", false);
     }
@@ -134,6 +138,10 @@ public class JHelper {
             return jhObj;
         }
         return null;
+    }
+
+    public String toString(){
+        return  bIsArray ? rootJsonArray.toString() : rootJsonObj.toString();
     }
 
     /**

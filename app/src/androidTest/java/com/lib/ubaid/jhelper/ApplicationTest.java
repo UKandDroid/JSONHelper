@@ -1,4 +1,4 @@
-package com.example.ubaid.jhelper;
+package com.lib.ubaid.jhelper;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

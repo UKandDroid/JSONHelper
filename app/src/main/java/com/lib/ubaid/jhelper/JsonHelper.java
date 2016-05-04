@@ -19,7 +19,7 @@ import java.util.List;
 // item[0].object.size_width     get/set a property of JSON Object
 // object1.object2.property      get nested objects and properties
 // METHODS:
-// get() -- Returns JSON Object/Array as JHelper object
+// get() -- Returns JSON Object/Array as JsonHelper object
 // getArray()  -- returns a Json array at given the path
 // getObject() -- returns a Json Object at given the path
 // getRoot()   -- Returns Root JSON
@@ -29,25 +29,25 @@ import java.util.List;
 * CLASS -- Helper class to get nester JSON objects by string
 * *********************************************************************************************
 */
-public class JHelper {
+public class JsonHelper {
     private JSONObject rootJsonObj;
     private JSONArray rootJsonArray;
     private String rootName;    // name of root node
     private String varName;     // Variable name
     private boolean bIsArray = false;
-    private final String LOG_TAG = "JHelper";
+    private final String LOG_TAG = "JsonHelper";
     private final String VERSION = "1.1";
 
-    public JHelper(){
+    public JsonHelper(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("Empty", "JHelper root json not set");
+            temp.put("Empty", "JsonHelper root json not set");
             setRoot(temp);
         } catch (JSONException e) {e.printStackTrace(); }
 
     }
-    public JHelper(JSONObject jObject){ setRoot(jObject); }
-    public JHelper(JSONArray jArray){ setRoot(jArray); }
+    public JsonHelper(JSONObject jObject){ setRoot(jObject); }
+    public JsonHelper(JSONArray jArray){ setRoot(jArray); }
 
     // METHOD - Returns a JSON Array based on path, array string is added "[]"
     public JSONArray getArray(String strPath) {
@@ -94,9 +94,9 @@ public class JHelper {
         return temp.optDouble(varName);
     }
     // METHOD - Sets a boolean
-    public JHelper setBoolean(String strPath, boolean value) {
+    public JsonHelper setBoolean(String strPath, boolean value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject)getJson(strPath, true);
             jObj.put(varName, value);
@@ -105,9 +105,9 @@ public class JHelper {
         return jTemp;
     }
     // METHOD - Sets a Json Object
-    public JHelper setJson(String strPath, JSONObject value) {
+    public JsonHelper setJson(String strPath, JSONObject value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject)getJson(strPath, true);
             jObj.put(varName, value);
@@ -116,9 +116,9 @@ public class JHelper {
         return jTemp;
     }
     // METHOD - Sets a Json array
-    public JHelper setJson(String strPath, JSONArray value) {
+    public JsonHelper setJson(String strPath, JSONArray value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject) getJson(strPath, true);
             jObj.put(varName, value);
@@ -127,9 +127,9 @@ public class JHelper {
         return jTemp;
     }
     // METHOD - Sets integer
-    public JHelper setInteger(String strPath, int value) {
+    public JsonHelper setInteger(String strPath, int value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject)getJson(strPath, true);
             jObj.put(varName, value);
@@ -138,9 +138,9 @@ public class JHelper {
         return jTemp;
     }
     // METHOD - Sets string
-    public JHelper setString(String strPath, String value) {
+    public JsonHelper setString(String strPath, String value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject)getJson(strPath, true);
             jObj.put(varName, value);
@@ -149,9 +149,9 @@ public class JHelper {
         return jTemp;
     }
     // METHOD - Sets double
-    public JHelper setDouble(String strPath, double value) {
+    public JsonHelper setDouble(String strPath, double value) {
         JSONObject jObj = null;
-        JHelper jTemp = new JHelper();
+        JsonHelper jTemp = new JsonHelper();
         try {
             jObj = (JSONObject)getJson(strPath, true);
             jObj.put(varName, value);
@@ -166,7 +166,7 @@ public class JHelper {
             jArray.put(value);
             return true;
         } else {
-            Log.d(LOG_TAG, "JHelper::add() root is not a JSON Array ");
+            Log.d(LOG_TAG, "JsonHelper::add() root is not a JSON Array ");
         }
         return false;
     }
@@ -182,13 +182,13 @@ public class JHelper {
         return bIsArray ? rootJsonArray.length() : 0;
     }
 
-    public JHelper getIndex(int index){
-        JHelper jhObj = new JHelper();
+    public JsonHelper getIndex(int index){
+        JsonHelper jhObj = new JsonHelper();
         if(bIsArray){
             try {
                 jhObj.setRoot(rootJsonArray.getJSONObject(index));
             } catch (JSONException e) {
-                Log.d(LOG_TAG, "JHelper::setString() cannot get array index: "+ index);
+                Log.d(LOG_TAG, "JsonHelper::setString() cannot get array index: "+ index);
                 e.printStackTrace();
                 return null;
             }
@@ -203,12 +203,12 @@ public class JHelper {
 
     /**
      * ***********************************************************************************************
-     * METHOD : returns JHelper object for the path, note to get array use '[]' at the array name end
+     * METHOD : returns JsonHelper object for the path, note to get array use '[]' at the array name end
      * ************************************************************************************************
      */
 
-    public JHelper get(String strPath){
-        JHelper jhTemp = new JHelper();
+    public JsonHelper get(String strPath){
+        JsonHelper jhTemp = new JsonHelper();
         Object obj = getJson(strPath, false);
         if(obj instanceof  JSONObject){
             jhTemp.setRoot((JSONObject) obj);
@@ -296,7 +296,7 @@ public class JHelper {
                 }
             }
         } catch (JSONException e) {
-            Log.d(LOG_TAG, "JHelper::getJson() error getting JSON " );
+            Log.d(LOG_TAG, "JsonHelper::getJson() error getting JSON " );
             return null;
         }
         return jsonResult;
@@ -376,7 +376,7 @@ public class JHelper {
             }
             br.close();
         } catch (IOException e) {
-            Log.d(LOG_TAG, "JHelper::loadJSONFile() opening file: " + fileName);
+            Log.d(LOG_TAG, "JsonHelper::loadJSONFile() opening file: " + fileName);
             bResult = false;
         }
 
@@ -384,12 +384,12 @@ public class JHelper {
             JSONObject jObj = new JSONObject(text.toString());
             setRoot(jObj);
         } catch (JSONException e) {
-            Log.d(LOG_TAG, "JHelper::loadJSONFile() Error creating JSONObject");
+            Log.d(LOG_TAG, "JsonHelper::loadJSONFile() Error creating JSONObject");
             try {
                 JSONArray jArray = new JSONArray(text.toString());
                 setRoot(jArray);
             } catch (JSONException e1) {
-                Log.d(LOG_TAG, "JHelper::loadJSONFile() Error creating JSONArray");
+                Log.d(LOG_TAG, "JsonHelper::loadJSONFile() Error creating JSONArray");
                 bResult = false;
             }
         }

@@ -2,13 +2,10 @@ package com.lib.ubaid.jhelper;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         Button btn = layout.button(R.id.btn_hello);
         TextView text =  layout.textView(R.id.txt_hello);
 
-     //   Log.d("JHelper", "Time: "+ layout.stopTimer());
-        JHelper help = new JHelper();
+     //   Log.d("JsonHelper", "Time: "+ layout.stopTimer());
+        JsonHelper help = new JsonHelper();
         //   help.loadJSONFile(this, "personas.js");
 
         //   boolean bActive = help.getBoolean("persona[0].poster[0].is_active");

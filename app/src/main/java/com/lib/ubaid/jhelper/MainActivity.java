@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         R.id Id = new R.id();
         setContentView(R.layout.activity_main);
-        ViewHelper layout = new ViewHelper(findViewById(R.id.lay_linear));
+        final ViewHelper layout = new ViewHelper(findViewById(R.id.lay_linear));
         layout.setViewText(Id.txt_hello, "Changed");
         String str = layout.getViewText(R.id.txt_hello);
         layout.setViewText(R.id.edit_hello, str);
@@ -36,6 +36,20 @@ public class MainActivity extends AppCompatActivity {
         layout.setViewText(R.id.edit_hello, str);
         layout.setViewText(R.id.btn_hello, str);
         layout.setBackground(R.id.edit_hello, R.drawable.abc_btn_check_material);
+Utils.updateUI(this, new Utils.UIThread() {
+    @Override
+    public void execute() {
+        layout.showProgress(MainActivity.this);
+
+    }
+});
+
+        Utils.postDelayed( 2000, new Utils.UIThread() {
+            @Override
+            public void execute() {
+                layout.hideProgress();
+            }
+        });
      /*   layout.setOnClickListener(R.id.btn_hello, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
         layout.updateUI(this, new ViewHelper.UIThread() {
             @Override
-            public void update() {
+            public void execute() {
 
             }
         });

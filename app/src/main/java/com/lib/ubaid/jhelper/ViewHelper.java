@@ -2,32 +2,31 @@ package com.lib.ubaid.jhelper;
 
 import android.content.Context;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
  * Created by Ubaid on 15/04/2016.
  */
 public class ViewHelper {
-    private View rootView;
-    private long iStartTime;                 // Timer variable
-    private String strTimerTag;
+    private ViewGroup rootView;
     private int[] arId = new int[256];   // Store loaded arView arId, so they can checked against.
     private View[] arView = new View[256];// keeps reference of loaded views, so they are not loaded again..
-
-    // INTERFACE - callback for code run on UI thread
-    interface UIThread{
-        public void update();
-    }
+    private RelativeLayout layoutProgress = null;
+    private ProgressBar progressBar;
     // CONSTRUCTORS
     public ViewHelper() {}
     public ViewHelper(View v){
-        rootView = v;
+        rootView = (ViewGroup)v;
     }
     public void setRootView(View v){
-        rootView = v;
+        rootView = (ViewGroup)v;
     }
     // METHODS - returns arView based on type
     public TextView textView(int id){ return (TextView)getView(id); }
@@ -68,6 +67,30 @@ public class ViewHelper {
        }
         return "Wrong view type";
     }
+
+    // METHOD - shows progress bar
+    public void showProgress(Context context){
+        if(layoutProgress == null){
+            layoutProgress = new RelativeLayout(context);
+            progressBar = new ProgressBar(context);
+            progressBar.setIndeterminate(true);
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutProgress.setLayoutParams(rlp);
+            layoutProgress.addView(progressBar);
+            rootView.addView(layoutProgress);
+            layoutProgress.bringToFront();
+            layoutProgress.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        }
+        layoutProgress.setVisibility(View.VISIBLE);
+    }
+    // METHOD - Hides progress bar
+    public void hideProgress(){
+        if(layoutProgress != null){
+            layoutProgress.setVisibility(View.GONE);
+        }
+    }
     // METHOD - sets onClickListener
     public void setOnClickListener(int id, View.OnClickListener listener){
         getView(id).setOnClickListener(listener);
@@ -89,26 +112,6 @@ public class ViewHelper {
             arView[index] = rootView.findViewById(id);
         }
         return arView[index];
-    }
-  // METHOD - Starts timer
-    public void startTimer(String strTag){
-        strTimerTag = strTag;
-        iStartTime = System.currentTimeMillis();
-    }
-    // METHOD - stops timer and returns time difference in millis
-    public String stopTimer(){
-        return  strTimerTag +" Time: " + (System.currentTimeMillis() - iStartTime)+"ms" ;
-    }
-    // METHOD - runs code on main thread, use for updating UI from non-UI thread
-    public static void updateUI(Context context, final UIThread obj){
-        Handler mainHandler = new Handler(context.getMainLooper());
-        mainHandler.post( new Runnable() { @Override public void run() { obj.update();}});
-    }
-    // METHOD - sleep thread
-    public void sleep(long millis){
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {  e.printStackTrace();}
     }
 
 }
